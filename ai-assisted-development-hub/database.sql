@@ -1,7 +1,7 @@
 -- ============================================================
 -- 考勤管理系统 - 完整数据库初始化脚本 (MySQL 8.0+)
 -- 400条员工数据 | 5管理员 | 1超级管理员 | 软删除
--- 超级管理员账号: super_admin / ChangeMe123!
+-- 包含 1 个超级管理员、4 个管理员、395 个普通员工示例数据
 -- ============================================================
 
 SET NAMES utf8mb4;
@@ -169,29 +169,28 @@ INSERT INTO `company_config` (`config_key`, `config_value`) VALUES
 
 -- ============================================================
 -- 员工数据（400条）
--- 密码统一为 BCrypt 加密的 "123456"
--- 超级管理员密码为 "ChangeMe123!"
--- 注意：实际部署时请用 Spring Security 的 BCryptPasswordEncoder 生成
--- 下面用占位符，需要在 Java 端启动时替换为真实 BCrypt hash
+-- 示例账号密码不直接写入仓库；SQL 中仅保留占位符
+-- Spring Boot 启动时会将占位符替换为真实 BCrypt hash
+-- 若未显式配置种子密码，系统会在首次启动时自动生成并打印到后端日志
 -- ============================================================
 
 -- 密码占位符说明:
--- __SEED_PASSWORD_COMMON__      → 启动时替换为 "123456" 的 BCrypt
--- __SEED_PASSWORD_SUPER_ADMIN__ → 启动时替换为 "ChangeMe123!" 的 BCrypt
+-- __SEED_PASSWORD_COMMON__      → 启动时替换为普通示例账号初始密码的 BCrypt
+-- __SEED_PASSWORD_SUPER_ADMIN__ → 启动时替换为超级管理员初始密码的 BCrypt
 
-SET @pwd_123456 = '__SEED_PASSWORD_COMMON__';
-SET @pwd_super = '__SEED_PASSWORD_SUPER_ADMIN__';
+SET @pwd_seed_common = '__SEED_PASSWORD_COMMON__';
+SET @pwd_seed_super_admin = '__SEED_PASSWORD_SUPER_ADMIN__';
 
 -- ★ 超级管理员（ID=1）
 INSERT INTO `employees` (`id`, `username`, `password`, `name`, `role`, `dept_id`, `department`, `position`, `employee_id`, `phone`, `email`, `join_date`) VALUES
-(1, 'super_admin', @pwd_super, '系统管理员', 'super_admin', 1, '技术部', '系统管理员', 'EMP001', '13800000001', 'admin@company.com', '2020-01-01');
+(1, 'super_admin', @pwd_seed_super_admin, '系统管理员', 'super_admin', 1, '技术部', '系统管理员', 'EMP001', '13800000001', 'admin@company.com', '2020-01-01');
 
 -- ★ 4个管理员（ID=2-5）
 INSERT INTO `employees` (`id`, `username`, `password`, `name`, `role`, `dept_id`, `department`, `position`, `employee_id`, `phone`, `email`, `join_date`) VALUES
-(2, 'admin_zhang', @pwd_123456, '张明远', 'admin', 1, '技术部', '技术总监',   'EMP002', '13800000002', 'zhangmy@company.com', '2020-03-15'),
-(3, 'admin_liu',   @pwd_123456, '刘芳',   'admin', 2, '市场部', '市场总监',   'EMP003', '13800000003', 'liufang@company.com', '2020-05-20'),
-(4, 'admin_zhou',  @pwd_123456, '周蕾',   'admin', 3, '人事部', '人事总监',   'EMP004', '13800000004', 'zhoulei@company.com', '2020-06-01'),
-(5, 'admin_wu',    @pwd_123456, '吴强',   'admin', 4, '财务部', '财务总监',   'EMP005', '13800000005', 'wuqiang@company.com', '2020-07-10');
+(2, 'admin_zhang', @pwd_seed_common, '张明远', 'admin', 1, '技术部', '技术总监',   'EMP002', '13800000002', 'zhangmy@company.com', '2020-03-15'),
+(3, 'admin_liu',   @pwd_seed_common, '刘芳',   'admin', 2, '市场部', '市场总监',   'EMP003', '13800000003', 'liufang@company.com', '2020-05-20'),
+(4, 'admin_zhou',  @pwd_seed_common, '周蕾',   'admin', 3, '人事部', '人事总监',   'EMP004', '13800000004', 'zhoulei@company.com', '2020-06-01'),
+(5, 'admin_wu',    @pwd_seed_common, '吴强',   'admin', 4, '财务部', '财务总监',   'EMP005', '13800000005', 'wuqiang@company.com', '2020-07-10');
 
 -- ★ 395个普通员工（ID=6-400）
 -- 使用存储过程批量生成
@@ -254,7 +253,7 @@ BEGIN
         VALUES (
             i,
             CONCAT('user', LPAD(i, 3, '0')),
-            @pwd_123456,
+            @pwd_seed_common,
             v_name,
             'employee',
             v_dept_id,
@@ -414,14 +413,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ============================================================
 -- 提示
 -- ============================================================
--- 1. BCrypt 密码 hash 需要在 Java 端用 BCryptPasswordEncoder 生成
---    建议在 Spring Boot 启动时用 CommandLineRunner 初始化:
---    encoder.encode("123456") 和 encoder.encode("ChangeMe123!")
+-- 1. BCrypt 密码 hash 由后端在启动时自动修复占位符
+--    可通过环境变量 SEED_SUPER_ADMIN_PASSWORD / SEED_COMMON_USER_PASSWORD 提前指定
+--    若未指定，系统会在首次启动时自动生成初始化密码并打印到后端日志
 --
 -- 2. 查询时需加 WHERE deleted_at IS NULL 过滤软删除记录
 --    推荐使用 MyBatis-Plus 的 @TableLogic 注解自动处理
 --
--- 3. 超级管理员账号: super_admin / ChangeMe123!
---    管理员账号: admin_zhang / 123456 (以此类推)
---    普通员工: user006 ~ user400 / 123456
+-- 3. 默认 SQL 会导入 1 个超级管理员、4 个管理员和 395 个普通员工示例数据
+--    首次初始化完成后，请登录系统并立即重置关键账号密码
 -- ============================================================

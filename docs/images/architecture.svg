@@ -1,0 +1,99 @@
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgArch" x1="40" y1="40" x2="1360" y2="880" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#EEF4FF"/>
+    </linearGradient>
+    <linearGradient id="layer1" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="layer2" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="layer3" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="layer4" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#EA580C"/>
+      <stop offset="1" stop-color="#FB923C"/>
+    </linearGradient>
+    <filter id="shadowArch" x="-20" y="-20" width="1440" height="260" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .title { font: 700 34px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .subtitle { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+      .layer-title { font: 700 28px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: white; }
+      .layer-sub { font: 500 15px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: rgba(255,255,255,0.88); }
+      .card-title { font: 700 18px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .card-text { font: 500 14px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect x="20" y="20" width="1360" height="880" rx="32" fill="url(#bgArch)"/>
+  <text x="70" y="88" class="title">前后端技术架构图</text>
+  <text x="70" y="122" class="subtitle">从前端展示层、接口与安全层，到后端业务层、数据层与 AI 集成层的整体技术架构</text>
+
+  <g filter="url(#shadowArch)">
+    <rect x="70" y="170" width="1260" height="148" rx="28" fill="url(#layer1)"/>
+    <text x="110" y="226" class="layer-title">前端展示层</text>
+    <text x="110" y="254" class="layer-sub">React + TypeScript + Vite + shadcn/ui + Tailwind CSS + Framer Motion</text>
+    <rect x="610" y="198" width="180" height="86" rx="20" fill="white"/>
+    <text x="642" y="232" class="card-title">工作台 / 报表</text>
+    <text x="640" y="258" class="card-text">Dashboard / Reports</text>
+    <rect x="810" y="198" width="180" height="86" rx="20" fill="white"/>
+    <text x="846" y="232" class="card-title">打卡 / 审批</text>
+    <text x="844" y="258" class="card-text">Attendance / Approval</text>
+    <rect x="1010" y="198" width="220" height="86" rx="20" fill="white"/>
+    <text x="1060" y="232" class="card-title">AI 助手 / 管理页面</text>
+    <text x="1062" y="258" class="card-text">AIAssistant / Employees</text>
+  </g>
+
+  <g filter="url(#shadowArch)">
+    <rect x="70" y="350" width="1260" height="148" rx="28" fill="url(#layer2)"/>
+    <text x="110" y="406" class="layer-title">接口与安全层</text>
+    <text x="110" y="434" class="layer-sub">RESTful API + JWT Authentication + Role-Based Access Control</text>
+    <rect x="620" y="378" width="190" height="86" rx="20" fill="white"/>
+    <text x="662" y="412" class="card-title">Axios / Fetch</text>
+    <text x="650" y="438" class="card-text">统一请求与错误处理</text>
+    <rect x="840" y="378" width="190" height="86" rx="20" fill="white"/>
+    <text x="878" y="412" class="card-title">JWT 过滤器</text>
+    <text x="866" y="438" class="card-text">用户身份解析与鉴权</text>
+    <rect x="1060" y="378" width="210" height="86" rx="20" fill="white"/>
+    <text x="1110" y="412" class="card-title">统一响应封装</text>
+    <text x="1092" y="438" class="card-text">ApiResponse / ExceptionHandler</text>
+  </g>
+
+  <g filter="url(#shadowArch)">
+    <rect x="70" y="530" width="1260" height="178" rx="28" fill="url(#layer3)"/>
+    <text x="110" y="588" class="layer-title">后端业务层</text>
+    <text x="110" y="616" class="layer-sub">Spring Boot 3 + Spring Security + MyBatis-Plus + PageHelper</text>
+    <rect x="500" y="564" width="170" height="98" rx="20" fill="white"/>
+    <text x="538" y="600" class="card-title">AuthService</text>
+    <text x="526" y="626" class="card-text">登录 / 密码 / JWT</text>
+    <rect x="690" y="564" width="170" height="98" rx="20" fill="white"/>
+    <text x="714" y="600" class="card-title">EmployeeService</text>
+    <text x="716" y="626" class="card-text">员工 / 部门管理</text>
+    <rect x="880" y="564" width="170" height="98" rx="20" fill="white"/>
+    <text x="904" y="600" class="card-title">AttendanceService</text>
+    <text x="914" y="626" class="card-text">打卡 / 记录 / 统计</text>
+    <rect x="1070" y="564" width="170" height="98" rx="20" fill="white"/>
+    <text x="1110" y="600" class="card-title">LeaveService</text>
+    <text x="1104" y="626" class="card-text">审批 / 请假流程</text>
+  </g>
+
+  <g filter="url(#shadowArch)">
+    <rect x="70" y="740" width="1260" height="118" rx="28" fill="url(#layer4)"/>
+    <text x="110" y="792" class="layer-title">数据与智能集成层</text>
+    <text x="110" y="820" class="layer-sub">MySQL + Mapper XML + Spring AI + OpenAI-Compatible Gateway</text>
+    <rect x="760" y="770" width="170" height="64" rx="18" fill="white"/>
+    <text x="825" y="810" class="card-title">MySQL</text>
+    <rect x="950" y="770" width="170" height="64" rx="18" fill="white"/>
+    <text x="994" y="810" class="card-title">Spring AI</text>
+    <rect x="1140" y="770" width="150" height="64" rx="18" fill="white"/>
+    <text x="1168" y="810" class="card-title">OpenAI API</text>
+  </g>
+</svg>

@@ -1,0 +1,125 @@
+<svg width="1400" height="880" viewBox="0 0 1400 880" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgFlow" x1="40" y1="40" x2="1360" y2="840" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FAFC"/>
+      <stop offset="1" stop-color="#EAF2FF"/>
+    </linearGradient>
+    <linearGradient id="cardBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="cardTeal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+    <linearGradient id="cardOrange" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#EA580C"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="cardPink" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#BE185D"/>
+      <stop offset="1" stop-color="#DB2777"/>
+    </linearGradient>
+    <linearGradient id="cardGray" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#334155"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <filter id="shadow" x="-20" y="-20" width="220" height="140" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M0 0L14 7L0 14V0Z" fill="#64748B"/>
+    </marker>
+    <style>
+      .title { font: 700 34px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .subtitle { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+      .card-title { font: 700 22px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: white; }
+      .card-text { font: 500 15px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: rgba(255,255,255,0.9); }
+      .note-title { font: 700 20px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .note-text { font: 500 15px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+      .step-num { font: 700 18px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: white; }
+    </style>
+  </defs>
+
+  <rect x="20" y="20" width="1360" height="840" rx="32" fill="url(#bgFlow)"/>
+  <text x="70" y="92" class="title">核心业务流程图</text>
+  <text x="70" y="126" class="subtitle">从员工登录、考勤打卡与申请提交，到管理员审批、统计报表与 AI 分析的完整业务闭环</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="190" width="220" height="108" rx="24" fill="url(#cardBlue)"/>
+    <circle cx="128" cy="228" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="121" y="235" class="step-num">1</text>
+    <text x="164" y="232" class="card-title">员工登录</text>
+    <text x="164" y="262" class="card-text">账号密码登录</text>
+    <text x="164" y="284" class="card-text">获取 Token 与角色信息</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="380" y="190" width="220" height="108" rx="24" fill="url(#cardTeal)"/>
+    <circle cx="428" cy="228" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="421" y="235" class="step-num">2</text>
+    <text x="456" y="232" class="card-title">考勤打卡</text>
+    <text x="456" y="262" class="card-text">GPS 定位 / 范围校验</text>
+    <text x="456" y="284" class="card-text">签到、签退与状态记录</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="680" y="190" width="220" height="108" rx="24" fill="url(#cardOrange)"/>
+    <circle cx="728" cy="228" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="721" y="235" class="step-num">3</text>
+    <text x="758" y="232" class="card-title">发起申请</text>
+    <text x="758" y="262" class="card-text">请假 / 调休 / 出差 / 加班</text>
+    <text x="758" y="284" class="card-text">进入待审批队列</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="980" y="190" width="260" height="108" rx="24" fill="url(#cardPink)"/>
+    <circle cx="1028" cy="228" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="1021" y="235" class="step-num">4</text>
+    <text x="1058" y="232" class="card-title">管理员审批</text>
+    <text x="1058" y="262" class="card-text">通过 / 驳回申请</text>
+    <text x="1058" y="284" class="card-text">处理待审批事项与权限管理</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="230" y="430" width="280" height="120" rx="26" fill="url(#cardGray)"/>
+    <circle cx="282" cy="470" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="275" y="477" class="step-num">5</text>
+    <text x="314" y="472" class="card-title">业务数据入库</text>
+    <text x="314" y="502" class="card-text">员工、部门、考勤记录、审批单</text>
+    <text x="314" y="524" class="card-text">规则配置与公司打卡位置同步更新</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="570" y="430" width="280" height="120" rx="26" fill="url(#cardBlue)"/>
+    <circle cx="622" cy="470" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="615" y="477" class="step-num">6</text>
+    <text x="656" y="472" class="card-title">工作台与报表</text>
+    <text x="656" y="502" class="card-text">管理员查看全局概览</text>
+    <text x="656" y="524" class="card-text">员工查看个人统计与记录</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="910" y="430" width="280" height="120" rx="26" fill="url(#cardTeal)"/>
+    <circle cx="962" cy="470" r="20" fill="rgba(255,255,255,0.2)"/>
+    <text x="955" y="477" class="step-num">7</text>
+    <text x="996" y="472" class="card-title">AI 智能分析</text>
+    <text x="996" y="502" class="card-text">AI 对话问答与报表摘要</text>
+    <text x="996" y="524" class="card-text">Spring AI + 业务上下文</text>
+  </g>
+
+  <path d="M300 244H380" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M600 244H680" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M900 244H980" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M790 298V380" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M1090 298V380" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M710 550H910" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M510 490H570" stroke="#64748B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M980 610C940 690 840 738 710 738C560 738 430 676 388 590" stroke="#94A3B8" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <rect x="84" y="628" width="1232" height="164" rx="28" fill="white" fill-opacity="0.78" stroke="#CBD5E1"/>
+  <text x="120" y="680" class="note-title">流程说明</text>
+  <text x="120" y="718" class="note-text">1. 员工登录后可执行打卡、查看记录和提交审批申请。</text>
+  <text x="120" y="746" class="note-text">2. 管理员处理待审批事项后，系统会同步更新审批状态、工作台统计和报表数据。</text>
+  <text x="120" y="774" class="note-text">3. AI 模块基于当前业务数据上下文，为员工问答和报表摘要提供智能分析能力。</text>
+</svg>

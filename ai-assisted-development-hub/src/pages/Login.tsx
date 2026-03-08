@@ -639,36 +639,17 @@ const Login = () => {
               </motion.div>
             </motion.form>
 
-            {/* 演示账号 */}
+            {/* 登录提示 */}
             <motion.div
               className="mt-8 pt-5 border-t border-border/30"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
-              <p className="text-xs text-muted-foreground text-center mb-3">演示账号 · 密码均为 123456</p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { name: 'admin', label: '管理员' },
-                  { name: 'employee1', label: '员工' },
-                ].map((account, i) => (
-                  <motion.button
-                    key={account.name}
-                    type="button"
-                    onClick={() => { setUsername(account.name); setPassword('123456'); }}
-                    className="py-3 px-4 rounded-xl border border-border/30 bg-background/30 backdrop-blur-sm hover:border-primary/30 hover:bg-primary/5 transition-all text-center"
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 + i * 0.1 }}
-                  >
-                    <span className="text-sm font-medium text-foreground">{account.name}</span>
-                    <br />
-                    <span className="text-xs text-muted-foreground">{account.label}</span>
-                  </motion.button>
-                ))}
-              </div>
+              <p className="text-xs text-muted-foreground text-center leading-6">
+                如使用仓库自带初始化数据，首次启动后端时会在日志中输出示例账号的初始化密码。
+                登录后建议立即在“人员管理”中重置关键账号密码。
+              </p>
             </motion.div>
           </GlowCard>
       </div>

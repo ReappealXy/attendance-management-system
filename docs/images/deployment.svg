@@ -1,0 +1,98 @@
+<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgDeploy" x1="40" y1="40" x2="1360" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#EEF6FF"/>
+    </linearGradient>
+    <linearGradient id="serverGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#EA580C"/>
+      <stop offset="1" stop-color="#FB923C"/>
+    </linearGradient>
+    <filter id="shadowDeploy" x="-20" y="-20" width="400" height="220" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowDeploy" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M0 0L14 7L0 14V0Z" fill="#64748B"/>
+    </marker>
+    <style>
+      .title { font: 700 34px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .subtitle { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+      .white-title { font: 700 24px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: white; }
+      .white-text { font: 500 15px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: rgba(255,255,255,0.9); }
+      .dark-title { font: 700 20px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #0F172A; }
+      .dark-text { font: 500 14px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #475569; }
+      .small-note { font: 600 13px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #64748B; }
+    </style>
+  </defs>
+
+  <rect x="20" y="20" width="1360" height="820" rx="32" fill="url(#bgDeploy)"/>
+  <text x="70" y="88" class="title">部署架构图</text>
+  <text x="70" y="122" class="subtitle">适用于单台云服务器的前后端分离部署：Nginx 托管前端，Spring Boot 提供 API，MySQL 存储业务数据，Spring AI 调用外部模型服务</text>
+
+  <g filter="url(#shadowDeploy)">
+    <rect x="90" y="280" width="230" height="160" rx="28" fill="url(#blueGrad)"/>
+    <text x="146" y="344" class="white-title">浏览器 / 用户</text>
+    <text x="142" y="378" class="white-text">员工端 / 管理端</text>
+    <text x="142" y="404" class="white-text">PC 或移动端访问</text>
+  </g>
+
+  <g filter="url(#shadowDeploy)">
+    <rect x="420" y="190" width="520" height="370" rx="32" fill="url(#serverGrad)"/>
+    <text x="456" y="246" class="white-title">云服务器 / Linux 主机</text>
+    <text x="456" y="278" class="white-text">统一部署前端静态资源、反向代理与后端服务</text>
+
+    <rect x="460" y="318" width="190" height="180" rx="24" fill="url(#tealGrad)"/>
+    <text x="522" y="368" class="white-title">Nginx</text>
+    <text x="492" y="402" class="white-text">80 / 443 对外提供访问</text>
+    <text x="492" y="428" class="white-text">托管前端 dist 静态文件</text>
+    <text x="492" y="454" class="white-text">/api 反向代理到后端</text>
+
+    <rect x="710" y="318" width="190" height="180" rx="24" fill="url(#blueGrad)"/>
+    <text x="742" y="368" class="white-title">Spring Boot</text>
+    <text x="742" y="402" class="white-text">RESTful API 服务</text>
+    <text x="742" y="428" class="white-text">JWT 鉴权 / 业务逻辑</text>
+    <text x="742" y="454" class="white-text">默认端口：8080</text>
+  </g>
+
+  <g filter="url(#shadowDeploy)">
+    <rect x="1020" y="210" width="270" height="150" rx="28" fill="url(#orangeGrad)"/>
+    <text x="1088" y="266" class="white-title">MySQL</text>
+    <text x="1060" y="300" class="white-text">员工、部门、考勤、审批</text>
+    <text x="1060" y="326" class="white-text">业务数据持久化存储</text>
+  </g>
+
+  <g filter="url(#shadowDeploy)">
+    <rect x="1020" y="410" width="270" height="150" rx="28" fill="url(#tealGrad)"/>
+    <text x="1060" y="466" class="white-title">Spring AI / 大模型网关</text>
+    <text x="1060" y="500" class="white-text">OpenAI-compatible API</text>
+    <text x="1060" y="526" class="white-text">AI 对话与摘要分析</text>
+  </g>
+
+  <path d="M320 360H420" stroke="#64748B" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowDeploy)"/>
+  <path d="M650 408H710" stroke="#94A3B8" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowDeploy)"/>
+  <path d="M900 350H1020" stroke="#64748B" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowDeploy)"/>
+  <path d="M900 470H1020" stroke="#64748B" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowDeploy)"/>
+
+  <rect x="90" y="620" width="1200" height="146" rx="28" fill="white" fill-opacity="0.82" stroke="#CBD5E1"/>
+  <text x="126" y="674" class="dark-title">部署说明</text>
+  <text x="126" y="708" class="dark-text">1. 用户通过浏览器访问域名，Nginx 统一对外提供 HTTPS 服务。</text>
+  <text x="126" y="734" class="dark-text">2. 前端页面由 Nginx 直接返回静态资源，所有 `/api` 请求转发到 Spring Boot 后端。</text>
+  <text x="126" y="760" class="dark-text">3. 后端负责连接 MySQL 处理业务数据，并通过 Spring AI 调用外部大模型能力。</text>
+
+  <text x="188" y="264" class="small-note">HTTPS / 域名访问</text>
+  <text x="680" y="388" class="small-note">静态资源 + /api 转发</text>
+  <text x="940" y="332" class="small-note">JDBC</text>
+  <text x="920" y="452" class="small-note">OpenAI-Compatible API</text>
+</svg>

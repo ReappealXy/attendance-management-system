@@ -29,7 +29,7 @@ type EmployeeForm = {
 const createInitialForm = (): EmployeeForm => ({
   username: '',
   name: '',
-  password: '123456',
+  password: '',
   department: EMPTY_DEPARTMENT_VALUE,
   position: '',
   phone: '',
@@ -107,9 +107,18 @@ const Employees = () => {
       toast({ title: '请填写用户名和姓名', variant: 'destructive' });
       return;
     }
+    if (!form.password.trim()) {
+      toast({ title: '请填写初始密码', variant: 'destructive' });
+      return;
+    }
+    if (form.password.trim().length < 6) {
+      toast({ title: '初始密码至少 6 位', variant: 'destructive' });
+      return;
+    }
     try {
       await employeeService.create({
         ...form,
+        password: form.password.trim(),
         department: form.department === EMPTY_DEPARTMENT_VALUE ? '' : form.department,
       });
       toast({ title: '添加成功' });
@@ -254,8 +263,12 @@ const Employees = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label>初始密码</Label>
-                      <Input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} />
+                      <Label>初始密码 *</Label>
+                      <Input
+                        value={form.password}
+                        onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                        placeholder="请手动设置初始密码"
+                      />
                     </div>
                     {isSuperAdmin && (
                       <div className="grid gap-2">

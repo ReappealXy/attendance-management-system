@@ -113,7 +113,7 @@ POST /api/auth/login
 ```json
 {
   "username": "admin",
-  "password": "123456"
+  "password": "your_password"
 }
 ```
 
@@ -189,9 +189,9 @@ PUT /api/auth/password
 **请求体：**
 ```json
 {
-  "oldPassword": "123456",
-  "newPassword": "654321",
-  "confirmPassword": "654321"
+  "oldPassword": "current_password",
+  "newPassword": "new_secure_password",
+  "confirmPassword": "new_secure_password"
 }
 ```
 
@@ -319,7 +319,7 @@ POST /api/employees
 ```json
 {
   "username": "zhangsan",
-  "password": "123456",
+  "password": "initial_password",
   "name": "张三",
   "role": "employee",
   "department": "技术部",

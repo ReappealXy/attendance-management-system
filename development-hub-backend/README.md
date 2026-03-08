@@ -32,7 +32,11 @@ JWT_SECRET=replace-with-a-secure-secret
 OPENAI_BASE_URL=https://api.openai.com
 OPENAI_API_KEY=your_api_key
 OPENAI_MODEL=gpt-4o-mini
+SEED_SUPER_ADMIN_PASSWORD=your_init_admin_password
+SEED_COMMON_USER_PASSWORD=your_init_user_password
 ```
+
+如果未配置种子账号密码且数据库脚本中仍包含占位符，系统会在首次启动时自动生成初始化密码并打印到后端日志，随后请立即重置。
 
 ## 核心模块
 
