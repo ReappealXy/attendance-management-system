@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.EmployeeMapper">
+
+    <resultMap id="EmployeeResultMap" type="xin.rexy.developmenthubbackend.model.entity.EmployeeEntity">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="role" property="role"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="department" property="department"/>
+        <result column="position" property="position"/>
+        <result column="employee_id" property="employeeId"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="join_date" property="joinDate"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="deleted_at" property="deletedAt"/>
+    </resultMap>
+
+    <select id="selectAuthByUsername" resultMap="EmployeeResultMap">
+        SELECT *
+        FROM employees
+        WHERE username = #{username}
+          AND deleted_at IS NULL
+        LIMIT 1
+    </select>
+
+    <select id="selectActiveById" resultMap="EmployeeResultMap">
+        SELECT *
+        FROM employees
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+        LIMIT 1
+    </select>
+
+    <select id="selectEmployeePage" resultMap="EmployeeResultMap">
+        SELECT id, username, name, role, dept_id, department, position, employee_id, phone, email, avatar, join_date, created_at, updated_at
+        FROM employees
+        WHERE deleted_at IS NULL
+        <if test="keyword != null and keyword != ''">
+            AND (
+                name LIKE CONCAT('%', #{keyword}, '%')
+                OR employee_id LIKE CONCAT('%', #{keyword}, '%')
+                OR phone LIKE CONCAT('%', #{keyword}, '%')
+                OR username LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+        <if test="department != null and department != ''">
+            AND department = #{department}
+        </if>
+        <if test="role != null and role != ''">
+            AND role = #{role}
+        </if>
+        ORDER BY id ASC
+    </select>
+
+    <select id="countActiveByDeptId" resultType="long">
+        SELECT COUNT(*)
+        FROM employees
+        WHERE dept_id = #{deptId}
+          AND deleted_at IS NULL
+    </select>
+
+    <update id="softDeleteById">
+        UPDATE employees
+        SET deleted_at = #{deletedAt},
+            updated_at = NOW()
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+    </update>
+
+    <update id="updateDepartmentNameByDeptId">
+        UPDATE employees
+        SET department = #{departmentName},
+            updated_at = NOW()
+        WHERE dept_id = #{deptId}
+          AND deleted_at IS NULL
+    </update>
+
+</mapper>

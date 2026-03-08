@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.StatisticsMapper">
+
+    <select id="selectPersonalStats" resultType="xin.rexy.developmenthubbackend.model.response.PersonalStatsResponse">
+        SELECT e.id AS user_id,
+               e.name AS user_name,
+               #{year} AS year,
+               #{month} AS month,
+               COUNT(ar.id) AS total_days,
+               COALESCE(SUM(CASE WHEN ar.status = 'normal' THEN 1 ELSE 0 END), 0) AS normal_days,
+               COALESCE(SUM(CASE WHEN ar.status = 'late' THEN 1 ELSE 0 END), 0) AS late_days,
+               COALESCE(SUM(CASE WHEN ar.status = 'early' THEN 1 ELSE 0 END), 0) AS early_days,
+               COALESCE(SUM(CASE WHEN ar.status = 'absent' THEN 1 ELSE 0 END), 0) AS absent_days,
+               COALESCE(SUM(CASE WHEN ar.status = 'leave' THEN 1 ELSE 0 END), 0) AS leave_days,
+               ROUND(
+                       CASE
+                           WHEN COUNT(ar.id) = 0 THEN 0
+                           ELSE SUM(CASE WHEN ar.status IN ('normal', 'late', 'early', 'leave') THEN 1 ELSE 0 END) / COUNT(ar.id) * 100
+                           END,
+                       1
+               ) AS attendance_rate
+        FROM employees e
+                 LEFT JOIN attendance_records ar
+                           ON e.id = ar.user_id
+                               AND ar.deleted_at IS NULL
+                               AND ar.date BETWEEN #{startDate} AND #{endDate}
+        WHERE e.id = #{userId}
+          AND e.deleted_at IS NULL
+        GROUP BY e.id, e.name
+    </select>
+
+    <select id="selectDepartmentStats" resultType="xin.rexy.developmenthubbackend.model.response.DepartmentStatsResponse">
+        SELECT e.department AS department,
+               COUNT(e.id) AS total,
+               COALESCE(SUM(CASE WHEN ar.status IN ('normal', 'late', 'early') THEN 1 ELSE 0 END), 0) AS present,
+               COALESCE(SUM(CASE WHEN ar.status = 'late' THEN 1 ELSE 0 END), 0) AS late,
+               COUNT(e.id) - COALESCE(SUM(CASE WHEN ar.status IN ('normal', 'late', 'early') THEN 1 ELSE 0 END), 0) AS absent,
+               ROUND(
+                       CASE
+                           WHEN COUNT(e.id) = 0 THEN 0
+                           ELSE COALESCE(SUM(CASE WHEN ar.status IN ('normal', 'late', 'early') THEN 1 ELSE 0 END), 0) / COUNT(e.id) * 100
+                           END,
+                       1
+               ) AS rate
+        FROM employees e
+                 LEFT JOIN attendance_records ar
+                           ON e.id = ar.user_id
+                               AND ar.date = #{date}
+                               AND ar.deleted_at IS NULL
+        WHERE e.deleted_at IS NULL
+        GROUP BY e.department
+        ORDER BY rate DESC, total DESC
+    </select>
+
+    <select id="countTotalEmployees" resultType="long">
+        SELECT COUNT(*)
+        FROM employees
+        WHERE deleted_at IS NULL
+    </select>
+
+    <select id="countPresentByDate" resultType="long">
+        SELECT COUNT(*)
+        FROM attendance_records ar
+        WHERE ar.date = #{date}
+          AND ar.deleted_at IS NULL
+          AND ar.status IN ('normal', 'late', 'early')
+    </select>
+
+    <select id="countAbsentByDate" resultType="long">
+        SELECT COUNT(e.id)
+        FROM employees e
+                 LEFT JOIN attendance_records ar
+                           ON e.id = ar.user_id
+                               AND ar.date = #{date}
+                               AND ar.deleted_at IS NULL
+        WHERE e.deleted_at IS NULL
+          AND (ar.id IS NULL OR ar.status IN ('absent', 'leave'))
+    </select>
+
+    <select id="countLateByDate" resultType="long">
+        SELECT COUNT(*)
+        FROM attendance_records
+        WHERE date = #{date}
+          AND deleted_at IS NULL
+          AND status = 'late'
+    </select>
+
+    <select id="calculateMonthlyAttendanceRate" resultType="double">
+        SELECT ROUND(
+                       CASE
+                           WHEN COUNT(ar.id) = 0 THEN 0
+                           ELSE SUM(CASE WHEN ar.status IN ('normal', 'late', 'early') THEN 1 ELSE 0 END) / COUNT(ar.id) * 100
+                           END,
+                       1
+               )
+        FROM attendance_records ar
+                 INNER JOIN employees e ON e.id = ar.user_id
+        WHERE ar.deleted_at IS NULL
+          AND e.deleted_at IS NULL
+          AND ar.date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="selectRecentAnomalies" resultType="xin.rexy.developmenthubbackend.model.response.RecentAnomaly">
+        SELECT ar.user_id,
+               e.name AS user_name,
+               e.department,
+               ar.status AS type,
+               ar.date,
+               CASE
+                   WHEN ar.status = 'late' THEN CONCAT('迟到，签到时间 ', TIME_FORMAT(ar.clock_in, '%H:%i'))
+                   WHEN ar.status = 'early' THEN CONCAT('早退，签退时间 ', TIME_FORMAT(ar.clock_out, '%H:%i'))
+                   WHEN ar.status = 'absent' THEN '缺勤'
+                   WHEN ar.status = 'leave' THEN '请假'
+                   ELSE ar.status
+                   END AS detail
+        FROM attendance_records ar
+                 INNER JOIN employees e ON e.id = ar.user_id
+        WHERE ar.date = #{date}
+          AND ar.deleted_at IS NULL
+          AND ar.status IN ('late', 'early', 'absent', 'leave')
+        ORDER BY ar.id DESC
+        LIMIT 10
+    </select>
+
+</mapper>

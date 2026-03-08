@@ -1,0 +1,24 @@
+# Frontend
+ai-assisted-development-hub/node_modules/
+ai-assisted-development-hub/dist/
+ai-assisted-development-hub/.vite/
+
+# Backend
+development-hub-backend/target/
+development-hub-backend/.mvn/wrapper/maven-wrapper.jar
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Local environment files
+.env
+.env.*
+*.local

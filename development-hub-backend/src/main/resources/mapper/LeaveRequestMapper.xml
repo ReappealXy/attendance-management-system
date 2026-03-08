@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.LeaveRequestMapper">
+
+    <resultMap id="LeaveRequestResultMap" type="xin.rexy.developmenthubbackend.model.entity.LeaveRequestEntity">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="reason" property="reason"/>
+        <result column="status" property="status"/>
+        <result column="approver_id" property="approverId"/>
+        <result column="approver_comment" property="approverComment"/>
+        <result column="approved_at" property="approvedAt"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="user_name" property="userName"/>
+        <result column="department" property="department"/>
+        <result column="approver_name" property="approverName"/>
+    </resultMap>
+
+    <sql id="LeaveBaseColumns">
+        lr.id,
+        lr.user_id,
+        lr.type,
+        lr.start_date,
+        lr.end_date,
+        lr.reason,
+        lr.status,
+        lr.approver_id,
+        lr.approver_comment,
+        lr.approved_at,
+        lr.created_at,
+        u.name AS user_name,
+        u.department,
+        a.name AS approver_name
+    </sql>
+
+    <select id="selectLeavePage" resultMap="LeaveRequestResultMap">
+        SELECT <include refid="LeaveBaseColumns"/>
+        FROM leave_requests lr
+                 LEFT JOIN employees u ON u.id = lr.user_id
+                 LEFT JOIN employees a ON a.id = lr.approver_id
+        WHERE lr.deleted_at IS NULL
+        <choose>
+            <when test="isAdmin">
+                <if test="userId != null">
+                    AND lr.user_id = #{userId}
+                </if>
+            </when>
+            <otherwise>
+                AND lr.user_id = #{currentUserId}
+            </otherwise>
+        </choose>
+        <if test="status != null and status != ''">
+            AND lr.status = #{status}
+        </if>
+        <if test="type != null and type != ''">
+            AND lr.type = #{type}
+        </if>
+        ORDER BY lr.created_at DESC, lr.id DESC
+    </select>
+
+    <select id="selectLeaveById" resultMap="LeaveRequestResultMap">
+        SELECT <include refid="LeaveBaseColumns"/>
+        FROM leave_requests lr
+                 LEFT JOIN employees u ON u.id = lr.user_id
+                 LEFT JOIN employees a ON a.id = lr.approver_id
+        WHERE lr.id = #{id}
+          AND lr.deleted_at IS NULL
+        LIMIT 1
+    </select>
+
+    <select id="countPendingByUserId" resultType="long">
+        SELECT COUNT(*)
+        FROM leave_requests
+        WHERE user_id = #{userId}
+          AND status = 'pending'
+          AND deleted_at IS NULL
+    </select>
+
+    <select id="countPendingAll" resultType="long">
+        SELECT COUNT(*)
+        FROM leave_requests
+        WHERE status = 'pending'
+          AND deleted_at IS NULL
+    </select>
+
+    <update id="softDeleteById">
+        UPDATE leave_requests
+        SET deleted_at = #{deletedAt}
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+    </update>
+
+</mapper>

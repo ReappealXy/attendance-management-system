@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.AttendanceRecordMapper">
+
+    <resultMap id="AttendanceRecordResultMap" type="xin.rexy.developmenthubbackend.model.entity.AttendanceRecordEntity">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="date" property="date"/>
+        <result column="clock_in" property="clockIn"/>
+        <result column="clock_out" property="clockOut"/>
+        <result column="status" property="status"/>
+        <result column="clock_in_lat" property="clockInLat"/>
+        <result column="clock_in_lng" property="clockInLng"/>
+        <result column="clock_out_lat" property="clockOutLat"/>
+        <result column="clock_out_lng" property="clockOutLng"/>
+        <result column="remark" property="remark"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="user_name" property="userName"/>
+        <result column="department" property="department"/>
+    </resultMap>
+
+    <sql id="AttendanceBaseColumns">
+        ar.id,
+        ar.user_id,
+        ar.date,
+        ar.clock_in,
+        ar.clock_out,
+        ar.status,
+        ar.clock_in_lat,
+        ar.clock_in_lng,
+        ar.clock_out_lat,
+        ar.clock_out_lng,
+        ar.remark,
+        ar.created_at,
+        e.name AS user_name,
+        e.department
+    </sql>
+
+    <select id="selectTodayRecord" resultMap="AttendanceRecordResultMap">
+        SELECT <include refid="AttendanceBaseColumns"/>
+        FROM attendance_records ar
+                 LEFT JOIN employees e ON e.id = ar.user_id
+        WHERE ar.user_id = #{userId}
+          AND ar.date = #{date}
+          AND ar.deleted_at IS NULL
+        LIMIT 1
+    </select>
+
+    <select id="selectMyPage" resultMap="AttendanceRecordResultMap">
+        SELECT <include refid="AttendanceBaseColumns"/>
+        FROM attendance_records ar
+                 LEFT JOIN employees e ON e.id = ar.user_id
+        WHERE ar.user_id = #{userId}
+          AND ar.deleted_at IS NULL
+        <if test="startDate != null">
+            AND ar.date <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND ar.date <![CDATA[<=]]> #{endDate}
+        </if>
+        <if test="status != null and status != ''">
+            AND ar.status = #{status}
+        </if>
+        ORDER BY ar.date DESC, ar.id DESC
+    </select>
+
+    <select id="selectAllPage" resultMap="AttendanceRecordResultMap">
+        SELECT <include refid="AttendanceBaseColumns"/>
+        FROM attendance_records ar
+                 LEFT JOIN employees e ON e.id = ar.user_id
+        WHERE ar.deleted_at IS NULL
+        <if test="userId != null">
+            AND ar.user_id = #{userId}
+        </if>
+        <if test="department != null and department != ''">
+            AND e.department = #{department}
+        </if>
+        <if test="startDate != null">
+            AND ar.date <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND ar.date <![CDATA[<=]]> #{endDate}
+        </if>
+        <if test="status != null and status != ''">
+            AND ar.status = #{status}
+        </if>
+        ORDER BY ar.date DESC, ar.id DESC
+    </select>
+
+    <select id="selectExportRecords" resultMap="AttendanceRecordResultMap">
+        SELECT <include refid="AttendanceBaseColumns"/>
+        FROM attendance_records ar
+                 LEFT JOIN employees e ON e.id = ar.user_id
+        WHERE ar.deleted_at IS NULL
+          AND ar.date BETWEEN #{startDate} AND #{endDate}
+        <if test="department != null and department != ''">
+            AND e.department = #{department}
+        </if>
+        ORDER BY e.department ASC, e.name ASC, ar.date ASC
+    </select>
+
+</mapper>

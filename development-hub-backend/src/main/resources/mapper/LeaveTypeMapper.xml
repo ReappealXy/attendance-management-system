@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.LeaveTypeMapper">
+
+    <select id="selectActiveList" resultType="xin.rexy.developmenthubbackend.model.entity.LeaveTypeEntity">
+        SELECT id, name, max_days, require_approval, created_at
+        FROM leave_types
+        WHERE deleted_at IS NULL
+        ORDER BY id ASC
+    </select>
+
+    <select id="selectActiveById" resultType="xin.rexy.developmenthubbackend.model.entity.LeaveTypeEntity">
+        SELECT id, name, max_days, require_approval, created_at
+        FROM leave_types
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+        LIMIT 1
+    </select>
+
+    <update id="softDeleteById">
+        UPDATE leave_types
+        SET deleted_at = #{deletedAt}
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+    </update>
+
+</mapper>

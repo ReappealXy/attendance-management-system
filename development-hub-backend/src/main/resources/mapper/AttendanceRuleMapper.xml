@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.rexy.developmenthubbackend.mapper.AttendanceRuleMapper">
+
+    <select id="selectActiveList" resultType="xin.rexy.developmenthubbackend.model.entity.AttendanceRuleEntity">
+        SELECT id, name, clock_in_time, clock_out_time, late_threshold, early_threshold, is_default, created_at, updated_at
+        FROM attendance_rules
+        WHERE deleted_at IS NULL
+        ORDER BY is_default DESC, id ASC
+    </select>
+
+    <select id="selectDefaultRule" resultType="xin.rexy.developmenthubbackend.model.entity.AttendanceRuleEntity">
+        SELECT id, name, clock_in_time, clock_out_time, late_threshold, early_threshold, is_default, created_at, updated_at
+        FROM attendance_rules
+        WHERE deleted_at IS NULL
+          AND is_default = 1
+        LIMIT 1
+    </select>
+
+    <update id="softDeleteById">
+        UPDATE attendance_rules
+        SET deleted_at = #{deletedAt},
+            updated_at = NOW()
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+    </update>
+
+</mapper>
