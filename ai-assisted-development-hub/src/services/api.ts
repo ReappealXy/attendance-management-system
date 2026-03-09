@@ -1,7 +1,8 @@
 // ==================== 统一API请求层 ====================
 // 所有后端请求都通过此模块发出，自动携带JWT、处理错误
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL
+  || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
 
 export interface ApiResponse<T = any> {
   code: number;
@@ -52,12 +53,23 @@ class ApiClient {
         body: body ? JSON.stringify(body) : undefined,
       });
 
-      // 401 未授权 → 清除token跳转登录
+      const isLoginRequest = path === '/auth/login';
+
+      // 401 未授权
       if (response.status === 401) {
-        localStorage.removeItem('attendance_token');
-        localStorage.removeItem('attendance_user');
-        window.location.href = '/login';
-        throw new Error('未登录或登录已过期');
+        const json = await response.json().catch(() => null);
+
+        if (!isLoginRequest) {
+          localStorage.removeItem('attendance_token');
+          localStorage.removeItem('attendance_user');
+          window.location.href = '/login';
+        }
+
+        throw new ApiError(
+          json?.code || 401,
+          json?.message || (isLoginRequest ? '用户名或密码错误' : '未登录或登录已过期'),
+          json?.errors
+        );
       }
 
       // blob 响应（文件下载）

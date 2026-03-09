@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ReactMarkdown from 'react-markdown';
 
-const DEFAULT_API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+const DEFAULT_API_BASE = import.meta.env.VITE_API_BASE_URL
+  || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
 const AI_API_BASE = import.meta.env.VITE_SPRING_AI_API_BASE || `${DEFAULT_API_BASE}/ai`;
 
 interface ChatMessage {
